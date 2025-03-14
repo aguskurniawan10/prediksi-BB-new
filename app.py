@@ -14,7 +14,7 @@ from sklearn.metrics import r2_score
 
 # Load Data from Excel File
 def load_data():
-    file_path = "C:/Users/agus.kurniawan/Downloads/DATA PREDIKSI NK LAB 2025.xlsx"
+    file_url = "https://raw.githubusercontent.com/aguskurniawan10/prediksi-BB-new/main/DATA%20PREDIKSI%20NK%20LAB%202025.xlsx"
     df = pd.read_excel(file_path)
     return df
 
