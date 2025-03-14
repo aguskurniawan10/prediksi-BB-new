@@ -40,17 +40,26 @@ if data is not None:
 
     best_model = None
     best_r2 = float("-inf")
+    model_r2_scores = {}
 
     for name, model in models.items():
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
         r2 = r2_score(y_test, y_pred)
+        model_r2_scores[name] = r2
         if r2 > best_r2:
             best_r2 = r2
             best_model = model
+            best_model_name = name
 
     # Streamlit UI
     st.title("Prediksi GCV (ARB) LAB")
+
+    st.write("### Model Evaluasi (R² Score)")
+    for model, r2 in model_r2_scores.items():
+        st.write(f"{model}: R² = {r2:.4f}")
+    
+    st.write(f"\n**Model Terbaik: {best_model_name} dengan R² = {best_r2:.4f}**")
 
     supplier_input = st.selectbox("Pilih Supplier", list(supplier_mapping.keys()))
     gcv_input = st.number_input("GCV ARB UNLOADING", min_value=3000, max_value=5000, value=4200)
@@ -63,4 +72,4 @@ if data is not None:
         input_data = np.array([[supplier_encoded, gcv_input, tm_input, ash_input, ts_input]])
         prediction = best_model.predict(input_data)[0]
         st.success(f"Hasil Prediksi GCV (ARB) LAB: {prediction:.2f}")
-        st.write(f"Model Terbaik: {type(best_model).__name__} (R²: {best_r2:.2f})")
+        st.write(f"Model yang digunakan: {best_model_name} (R²: {best_r2:.4f})")
